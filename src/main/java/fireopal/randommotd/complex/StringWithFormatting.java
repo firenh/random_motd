@@ -23,6 +23,12 @@ public abstract class StringWithFormatting {
 
     public abstract MutableText asText();
 
+    public String toString() {
+        return this.asString();
+    }
+
+    public abstract String asString();
+
     public static class Uniform extends StringWithFormatting {
         public Uniform(String string, Color color, boolean bold, boolean italic, boolean underlined, 
                 boolean strikethrough, boolean obfusicated) {
@@ -42,6 +48,20 @@ public abstract class StringWithFormatting {
                 .withObfuscated(this.isObfusicated())
             );
         }
+
+        @Override
+        public String asString() {
+            return "Uniform: %s; Color: %s; B %s, I %s, U %s, S %s, O %s".formatted(
+                this.getString(),
+                "" + this.getColor().getRGB(),
+                "" + this.isBold(),
+                "" + this.isItalic(),
+                "" + this.isUnderlined(),
+                "" + this.isStrikethrough(),
+                "" + this.isObfusicated()
+            );
+        }
+
     }
 
     public static class Gradient extends StringWithFormatting {
@@ -89,6 +109,20 @@ public abstract class StringWithFormatting {
             }
 
             return text;
+        }
+
+        @Override
+        public String asString() {
+            return "Gradient: %s; Colors: %s to %s;  B %s, I %s, U %s, S %s, O %s".formatted(
+                this.getString(),
+                "" + this.getColor().getRGB(),
+                "" + this.getColor2().getRGB(),
+                "" + this.isBold(),
+                "" + this.isItalic(),
+                "" + this.isUnderlined(),
+                "" + this.isStrikethrough(),
+                "" + this.isObfusicated()
+            );
         }
     }
 

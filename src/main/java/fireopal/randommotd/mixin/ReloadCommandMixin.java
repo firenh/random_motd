@@ -13,8 +13,10 @@ import net.minecraft.server.command.ServerCommandSource;
 
 @Mixin(ReloadCommand.class)
 public class ReloadCommandMixin {
-    @Inject(method = "tryReloadDataPacks", at = @At("HEAD"))
+    @Inject(method = "tryReloadDataPacks", at = @At("RETURN"))
     private static void tryReloadDataPacks(Collection<String> dataPacks, ServerCommandSource source, CallbackInfo info) {
-        RandomMotd.loadConfigFromFile();
+        try {
+            RandomMotd.loadConfigFromFile();
+        } catch (Exception e) {}
     }
 }

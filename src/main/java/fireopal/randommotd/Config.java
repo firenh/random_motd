@@ -26,51 +26,33 @@ public class Config {
 
     public String CONFIG_VERSION_DO_NOT_TOUCH_PLS = RandomMotd.VERSION.toString();
 
-    public List<WeightedMotd<String>> simple_motds = defaultSimpleMotds();
-
-    private List<WeightedMotd<String>> defaultSimpleMotds() {
-        List<WeightedMotd<String>> motds = new ArrayList<>();
-
-        Collections.addAll(motds,
-            new WeightedMotd<>("This is a simple MOTD", 1),
-            new WeightedMotd<>("Another simple MOTD", 1)
-        );
-
-        return motds;
-    }
-
-    public List<WeightedMotd<ComplexMotd>> complex_motds = defaultComplexMotds();
-
-    private List<WeightedMotd<ComplexMotd>> defaultComplexMotds() {
-        List<WeightedMotd<ComplexMotd>> motds = new ArrayList<>();
-
-        Collections.addAll(motds,
-            new WeightedMotd<ComplexMotd>(
-                new ComplexMotd(
-                    new StringWithFormatting.Gradient(
-                        "LMAOOOOOOOOOOOOO",
-                        new Color(255, 0, 0), new Color(255, 255, 0),
-                        false, false, false, false, false
-                    )
-                ), 1
-            ),
-            new WeightedMotd<ComplexMotd>(
-                new ComplexMotd(
-                    new StringWithFormatting.Gradient(
-                        "Gay Rightssssss",
-                        new Color(0, 0, 255), new Color(255, 0, 0),
-                        false, false, false, false, false
-                    )
-                ), 1
-            )
-        );
-
-        return motds;
-    }
-
+    public List<String> simple_motds = defaultSimpleMotds();
+    public List<String> complex_motds = defaultComplexMotds();
     public boolean log_when_loaded = false;
     public int loops = 5;
     
+    private List<String> defaultSimpleMotds() {
+        List<String> motds = new ArrayList<>();
+
+        Collections.addAll(motds,
+            "This is a simple MOTD",
+            "Another simple MOTD"
+        );
+
+        return motds;
+    }
+
+    private List<String> defaultComplexMotds() {
+        List<String> motds = new ArrayList<>();
+
+        Collections.addAll(motds,
+            "This is a <c#FF0000#0000FF> COMPLEX motd!!",
+            "<b>Gradients work in<c#FFFF00#0000FF> complex motds"
+        );
+
+        return motds;
+    }
+
     //~~~~~~~~
 
     public static Config init() {

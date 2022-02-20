@@ -29,4 +29,16 @@ public class ComplexMotd {
 
         return text;
     }
+
+    @Override
+    public String toString() {
+        String str = "{ ";
+
+        for (StringWithFormatting s : this.strings) {
+            str += s.toString() + " } {";
+        }
+
+        str = str.substring(0, str.length() - 1);
+        return str;
+    }
 }
