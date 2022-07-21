@@ -15,10 +15,6 @@ import com.google.gson.Gson;
 
 import com.google.gson.GsonBuilder;
 
-import fireopal.randommotd.complex.Color;
-import fireopal.randommotd.complex.ComplexMotd;
-import fireopal.randommotd.complex.StringWithFormatting;
-import fireopal.randommotd.util.WeightedMotd;
 public class Config {
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -26,34 +22,40 @@ public class Config {
 
     public String CONFIG_VERSION_DO_NOT_TOUCH_PLS = RandomMotd.VERSION.toString();
 
-    public List<String> simple_motds = defaultSimpleMotds();
-    public List<String> complex_motds = defaultComplexMotds();
+    public List<List<String>> motds = defaultSimpleMotds();
+    public boolean use_randomized_icons = true;
+    public List<String> icons = defaultServerIcons();
     public boolean log_when_loaded = false;
     public int loops = 5;
     
-    private List<String> defaultSimpleMotds() {
-        List<String> motds = new ArrayList<>();
-
-        Collections.addAll(motds,
-            "This is a simple MOTD",
-            "Another simple MOTD"
+    private List<List<String>> defaultSimpleMotds() {
+        List<List<String>> motds = new ArrayList<>();
+        
+        List<String> motds_0 = new ArrayList<>();
+        Collections.addAll(motds_0,
+            "RandomMOTD",
+            "<rb>RandomMOTD</rb>"
         );
+        motds.add(motds_0);
 
-        return motds;
-    }
-
-    private List<String> defaultComplexMotds() {
-        List<String> motds = new ArrayList<>();
-
-        Collections.addAll(motds,
-            "This is a <c#FF0000#0000FF> COMPLEX motd!!",
-            "<b>Gradients work in<c#FFFF00#0000FF> complex motds"
+        List<String> motds_1 = new ArrayList<>();
+        Collections.addAll(motds_1,
+            "This is an MOTD",
+            "Another MOTD",
+            "This is an MOTD with <rb>formatting</rb>"
         );
-
+        motds.add(motds_1);
+        
         return motds;
     }
 
     //~~~~~~~~
+
+    private List<String> defaultServerIcons() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("server-icon.png");
+        return list;
+    }
 
     public static Config init() {
         Config config = null;

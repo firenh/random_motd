@@ -1,27 +1,35 @@
 package fireopal.randommotd;
 
-import net.fabricmc.api.ModInitializer;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Base64;
+import java.util.Optional;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
+import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import fireopal.randommotd.complex.ParseStringToComplexMotd;
+import eu.pb4.placeholders.api.TextParserUtils;
+import net.fabricmc.api.ModInitializer;
+import net.minecraft.text.Text;
 
 public class RandomMotd implements ModInitializer {
 	public static final String MODID = "random_motd";
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
-	public static final FOModVersion VERSION = FOModVersion.fromString("0.0.0");
+	public static final FOModVersion VERSION = FOModVersion.fromString("0.1.0");
 
 	private static Config CONFIG;
 	private static Random random = new Random();
-	
-	private static Text[] motds;
+
+	private static String[][] motds;
+	private static String[] icons;
 
 	public static Config getConfig() {
 		return CONFIG;
@@ -32,7 +40,28 @@ public class RandomMotd implements ModInitializer {
 	}
 
 	public static Text getRandomMotd(Random random) {
-		return motds[random.nextInt(0, motds.length)];
+		String s = "";
+
+		for (String[] w : motds) {
+			s += w[random.nextInt(w.length)];
+		}
+
+		return TextParserUtils.formatText(s);
+	}
+
+	public static String getRandomIcon() {
+		return getRandomIcon(random);
+	}
+
+	public static String getRandomIcon(Random random) {
+		// String icon = 
+		// LOGGER.info(icon);
+		return "data:image/png;base64," + icons[random.nextInt(icons.length)];
+	}
+
+	public static boolean useRandomIcons() {
+		// LOGGER.info(icons.length);
+		return icons.length > 0;
 	}
 
 	public static void log(String output) {
@@ -49,40 +78,49 @@ public class RandomMotd implements ModInitializer {
         if (CONFIG.log_when_loaded) log("Loaded config for " + MODID);
 
 		cacheMotds();
+
+		if (CONFIG.use_randomized_icons) {
+			// LOGGER.info("Uses randomized icons");
+			cacheIcons();
+		} else {
+			icons = new String[]{};
+		}
     }
 
 	private static void cacheMotds() {
-		int totalWeight = 0;
+		motds = CONFIG.motds.stream()
+			.map(l -> l.stream().toArray(String[]::new))
+			.toArray(String[][]::new);
+	}
 
-		List<Text> motdsTemp = new ArrayList<>();
-		List<Integer> chancesTemp0 = new ArrayList<>();
-		List<Double> chancesTemp1 = new ArrayList<>();
-		double highestChance = 0d;
-		int length = 0;
+	private static void cacheIcons() {
+		ArrayList<String> list = new ArrayList<>();
 
-		for (String s : CONFIG.complex_motds) {
-			motdsTemp.add(ParseStringToComplexMotd.parse(s).asText());
-			length += 1;
-		}
-
-		for (String w : CONFIG.simple_motds) {
-			motdsTemp.add(new LiteralText(w));
-			length += 1;
-		}
-
-		for (int i = 0; i < length; i += 1) {
-			double chance = (double) chancesTemp0.get(i) / (double) totalWeight;
-			chancesTemp1.add(chance);
-
-			if (chance > highestChance) {
-				highestChance = chance;
+		for (String iconPath : CONFIG.icons) {
+			Optional<File> optional = Optional.of(new File(".", iconPath)).filter(File::isFile);
+			
+			if (optional.isEmpty()) {
+				LOGGER.info("Icon `" + iconPath + "` does not exist!");
+				continue;
 			}
+			
+			optional.ifPresent(file -> {
+				try {
+					BufferedImage bufferedImage = ImageIO.read(file);
+					Validate.validState(bufferedImage.getWidth() == 64, "Icon `" + iconPath + "` is not 64 pixels wide!", new Object[0]);
+					Validate.validState(bufferedImage.getHeight() == 64, "Icon `" + iconPath + "` is not 64 pixels high!", new Object[0]);
+					ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+					ImageIO.write((RenderedImage)bufferedImage, "PNG", byteArrayOutputStream);
+					byte[] bs = Base64.getEncoder().encode(byteArrayOutputStream.toByteArray());
+					String icon = new String(bs, StandardCharsets.UTF_8);
+					list.add(icon);
+					// LOGGER.info("Icon: " + icon);
+				} catch (Exception exception) {
+					LOGGER.info("Couldn't load icon `" + iconPath + "`!");
+				}
+			});
 		}
 
-		motds = motdsTemp.toArray(new Text[0]);
-
-		if (motds.length == 0) {
-			motds = new Text[]{new LiteralText("Bestie didn't provide any MOTDS in config/random_motd.json\nMaybe you oughta do that. Anyway \u00a7bT\u00a7dR\u00a7fA\u00a7dN\u00a7bS \u00a7rrights")};
-		}
+		icons = list.toArray(String[]::new);
 	}
 }

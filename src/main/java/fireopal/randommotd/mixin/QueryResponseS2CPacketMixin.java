@@ -2,7 +2,6 @@ package fireopal.randommotd.mixin;
 
 import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
 import net.minecraft.server.ServerMetadata;
-import net.minecraft.text.LiteralText;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,15 +19,23 @@ public class QueryResponseS2CPacketMixin {
 
 	@Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/server/ServerMetadata;)V")
 	private void _init__ServerMetaData(CallbackInfo ci) {
-		RandomMotd.log("QueryResponseS2CPacket created with ServerMetaData.");
+		// RandomMotd.log("QueryResponseS2CPacket created with ServerMetaData.");
 
 		this.metadata.setDescription(RandomMotd.getRandomMotd());
+		
+		if (RandomMotd.useRandomIcons()) {
+			this.metadata.setFavicon(RandomMotd.getRandomIcon());
+		}
 	}
 
 	@Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/network/PacketByteBuf;)V")
 	private void _init__PacketByteBuf(CallbackInfo ci) {
-		RandomMotd.log("QueryResponseS2CPacket created with PacketByteBuf.");
+		// RandomMotd.log("QueryResponseS2CPacket created with PacketByteBuf.");
 
 		this.metadata.setDescription(RandomMotd.getRandomMotd());
+
+		if (RandomMotd.useRandomIcons()) {
+			this.metadata.setFavicon(RandomMotd.getRandomIcon());
+		}
 	}
 }
