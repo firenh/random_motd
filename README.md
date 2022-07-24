@@ -1,9 +1,6 @@
-# Fabric Example Mod
+# RandomMOTD <img src="https://github.com/firenh/random_motd/blob/master/src/main/resources/assets/modid/icon.png?raw=true">
 
-## Setup
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
 
-## License
+## Make your server pop from the multiplayer window!
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
