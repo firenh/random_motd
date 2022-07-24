@@ -1,0 +1,25 @@
+{
+  "CONFIG_VERSION_DO_NOT_TOUCH_PLS": "1.0.0",
+  "motds": [
+    [
+      // "<rb>RandomMOTD MC Server</rb>"
+      "\u00a7bRa\u00a7dnd\u00a7fom\u00a7dMO\u00a7bTD\u00a7e\u00a7o MC Server"
+    ],
+    [
+      "\u00a77\u00a7o- Random Every Time!"
+    ],
+    [
+      "\n"
+    ],
+    [
+      // "\u00a74|||\u00a7c Server Announcement! \u00a74|||"
+      "\u00a71\u00a7o\u00a7mAn \u00a7a\u00a7o\u00a7mEaster\u00a73\u00a7o\u00a7m Egg"
+    ]
+  ],
+  "use_randomized_icons": true,
+  "icons": [
+    // "server-icon.png"
+    "server-icon-dark.png"
+  ],
+  "log_when_loaded": true
+}

@@ -26,7 +26,6 @@ public class Config {
     public boolean use_randomized_icons = true;
     public List<String> icons = defaultServerIcons();
     public boolean log_when_loaded = false;
-    public int loops = 5;
     
     private List<List<String>> defaultSimpleMotds() {
         List<List<String>> motds = new ArrayList<>();
