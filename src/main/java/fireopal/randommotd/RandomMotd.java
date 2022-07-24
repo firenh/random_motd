@@ -23,7 +23,7 @@ import net.minecraft.text.Text;
 public class RandomMotd implements ModInitializer {
 	public static final String MODID = "random_motd";
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
-	public static final FOModVersion VERSION = FOModVersion.fromString("0.1.0");
+	public static final FOModVersion VERSION = FOModVersion.fromString("1.0.0");
 
 	private static Config CONFIG;
 	private static Random random = new Random();
