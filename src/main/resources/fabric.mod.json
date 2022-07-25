@@ -3,17 +3,17 @@
   "id": "random_motd",
   "version": "${version}",
 
-  "name": "Random Motd",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "RandomMOTD",
+  "description": "Make your server pop from the multiplayer window with a randomized Message of the Day",
   "authors": [
-    "Me!"
+    "FireNH"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://modrinth.com/mod/RandomMOTD",
+    "sources": "https://github.com/firenh/random_motd/"
   },
 
-  "license": "CC0-1.0",
+  "license": "LGPL-3.0",
   "icon": "assets/random_motd/icon.png",
 
   "environment": "*",

@@ -1,8 +1,6 @@
 # <img src="https://github.com/firenh/random_motd/blob/master/src/main/resources/assets/modid/logo_md.png?raw=true" alt="RandomMOTD">
 
-
-
-## Make your server pop from the multiplayer window!
+## RandomMOTD ~ Make your server pop from the multiplayer window!
 
 ### _Server Side Mod: Does not need installation on client; compatible with vanilla clients!_
 
@@ -15,6 +13,8 @@ With RandomMOTD, a new MOTD picked randomly from a list can be sent to the playe
 In addition, RandomMOTD uses the [PlaceholderAPI library by Patbox](https://placeholders.pb4.eu/) which allows better custom styling including custom color codes and gradients, and in a future update access to information on the server such as Player Count and TPS.
 
 Finally, RandomMOTD also has one more optional feature: randomized server icons. These are off by default, but allow for multiple server icons that are updated with every refresh. These can be used to create variants of the server icon, or just full-on randomized pictures. There is no limit to the amount of MOTDs and icons one can add.
+
+<br>
 
 <details>
     <summary>Config</summary>
@@ -32,5 +32,12 @@ The Config file, found in `./config/random_motd.json`, includes 4 options. The c
 * `"CONFIG_VERSION_DO_NOT_TOUCH_PLS"`: Mod version--please do not touch it.
 
 </details>
+<br>
+<br>
+
+### Example
+Two refreshes of the server with a randomized MOTD and Server Icon
+
+<img src="https://github.com/firenh/random_motd/blob/master/src/main/resources/assets/modid/example.png?raw=true" alt="A server's MOTD and Icon updating dynamically">
 
 _Originally created for my private SMP, but I figured more people may want to use it_
