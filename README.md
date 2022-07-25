@@ -1,4 +1,4 @@
-# <img src="https://github.com/firenh/random_motd/blob/master/src/main/resources/assets/modid/logo_md.png?raw=true" alt="RandomMOTD">
+# <img src="https://github.com/firenh/random_motd/blob/master/img/logo_md.png?raw=true" alt="RandomMOTD">
 
 ## RandomMOTD ~ Make your server pop from the multiplayer window!
 
@@ -38,6 +38,6 @@ The Config file, found in `./config/random_motd.json`, includes 4 options. The c
 ### Example
 Two refreshes of the server with a randomized MOTD and Server Icon
 
-<img src="https://github.com/firenh/random_motd/blob/master/src/main/resources/assets/modid/example.png?raw=true" alt="A server's MOTD and Icon updating dynamically">
+<img src="https://github.com/firenh/random_motd/blob/master/img/example.png?raw=true" alt="A server's MOTD and Icon updating dynamically">
 
 _Originally created for my private SMP, but I figured more people may want to use it_
