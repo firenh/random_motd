@@ -4,20 +4,21 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.base.Preconditions;
+
 import eu.pb4.placeholders.api.TextParserUtils;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.server.ServerMetadata;
+import net.minecraft.server.ServerMetadata.Favicon;
 import net.minecraft.text.Text;
 
 public class RandomMotd implements ModInitializer {
@@ -29,7 +30,7 @@ public class RandomMotd implements ModInitializer {
 	private static Random random = new Random();
 
 	private static String[][] motds;
-	private static String[] icons;
+	private static Favicon[] icons;
 
 	public static Config getConfig() {
 		return CONFIG;
@@ -49,14 +50,15 @@ public class RandomMotd implements ModInitializer {
 		return TextParserUtils.formatText(s);
 	}
 
-	public static String getRandomIcon() {
+	public static ServerMetadata.Favicon getRandomIcon() {
 		return getRandomIcon(random);
 	}
 
-	public static String getRandomIcon(Random random) {
-		// String icon = 
+	public static ServerMetadata.Favicon getRandomIcon(Random random) {
+		LOGGER.info("getting random icon");
+		// String icon =
 		// LOGGER.info(icon);
-		return "data:image/png;base64," + icons[random.nextInt(icons.length)];
+		return icons[random.nextInt(icons.length)];
 	}
 
 	public static boolean useRandomIcons() {
@@ -65,17 +67,18 @@ public class RandomMotd implements ModInitializer {
 	}
 
 	public static void log(String output) {
-        LOGGER.info(output);
-    }
-    
-	@Override
-    public void onInitialize() {
-        loadConfigFromFile();
-    }
+		LOGGER.info(output);
+	}
 
-    public static void loadConfigFromFile() {
-        CONFIG = Config.init();
-        if (CONFIG.log_when_loaded) log("Loaded config for " + MODID);
+	@Override
+	public void onInitialize() {
+		loadConfigFromFile();
+	}
+
+	public static void loadConfigFromFile() {
+		CONFIG = Config.init();
+		if (CONFIG.log_when_loaded)
+			log("Loaded config for " + MODID);
 
 		cacheMotds();
 
@@ -83,44 +86,41 @@ public class RandomMotd implements ModInitializer {
 			// LOGGER.info("Uses randomized icons");
 			cacheIcons();
 		} else {
-			icons = new String[]{};
+			icons = new Favicon[]{};
 		}
-    }
+	}
 
 	private static void cacheMotds() {
 		motds = CONFIG.motds.stream()
-			.map(l -> l.stream().toArray(String[]::new))
-			.toArray(String[][]::new);
+				.map(l -> l.stream().toArray(String[]::new))
+				.toArray(String[][]::new);
 	}
 
 	private static void cacheIcons() {
-		ArrayList<String> list = new ArrayList<>();
+		ArrayList<Favicon> list = new ArrayList<>();
 
 		for (String iconPath : CONFIG.icons) {
 			Optional<File> optional = Optional.of(new File(".", iconPath)).filter(File::isFile);
-			
+
 			if (optional.isEmpty()) {
 				LOGGER.info("Icon `" + iconPath + "` does not exist!");
 				continue;
 			}
-			
+
 			optional.ifPresent(file -> {
 				try {
 					BufferedImage bufferedImage = ImageIO.read(file);
-					Validate.validState(bufferedImage.getWidth() == 64, "Icon `" + iconPath + "` is not 64 pixels wide!", new Object[0]);
-					Validate.validState(bufferedImage.getHeight() == 64, "Icon `" + iconPath + "` is not 64 pixels high!", new Object[0]);
+					Preconditions.checkState(bufferedImage.getWidth() == 64, "Must be 64 pixels wide");
+					Preconditions.checkState(bufferedImage.getHeight() == 64, "Must be 64 pixels high");
 					ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-					ImageIO.write((RenderedImage)bufferedImage, "PNG", byteArrayOutputStream);
-					byte[] bs = Base64.getEncoder().encode(byteArrayOutputStream.toByteArray());
-					String icon = new String(bs, StandardCharsets.UTF_8);
-					list.add(icon);
-					// LOGGER.info("Icon: " + icon);
+					ImageIO.write((RenderedImage) bufferedImage, "PNG", byteArrayOutputStream);
+					list.add(new ServerMetadata.Favicon(byteArrayOutputStream.toByteArray()));
 				} catch (Exception exception) {
-					LOGGER.info("Couldn't load icon `" + iconPath + "`!");
+					LOGGER.error("Couldn't load server icon", exception);
 				}
 			});
 		}
 
-		icons = list.toArray(String[]::new);
+		icons = list.toArray(Favicon[]::new);
 	}
 }

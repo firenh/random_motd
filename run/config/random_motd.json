@@ -1,0 +1,23 @@
+{
+  "CONFIG_VERSION_DO_NOT_TOUCH_PLS": "1.0.0",
+  "motds": [
+    [
+      "RandomMOTD",
+      "\u003crb\u003eRandomMOTD\u003c/rb\u003e"
+    ],
+    [
+      "\n"
+    ],
+    [
+      "This is an MOTD",
+      "Another MOTD",
+      "This is an MOTD with \u003crb\u003eformatting\u003c/rb\u003e"
+    ]
+  ],
+  "use_randomized_icons": true,
+  "icons": [
+    "server-icon.png",
+    "server-icon-2.png"
+  ],
+  "log_when_loaded": false
+}
